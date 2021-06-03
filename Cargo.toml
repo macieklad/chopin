@@ -7,3 +7,8 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+clap = "2.3.3"
+pest = "2.1.3"
+pest_derive = "2.1.0"
+pest_string = { git = "https://github.com/alvivin/pest_string" }
+pest_string_derive = { git = "https://github.com/alvivin/pest_string_derive" }

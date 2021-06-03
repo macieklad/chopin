@@ -1,0 +1,59 @@
+WHITESPACE = _{ PATTERN_WHITE_SPACE }
+COMMENT = _{ "/*" ~ (!"*/" ~ ANY)* ~ "*/" }
+
+program = { declaration* }
+declaration = { 
+  classDecl 
+  | funDecl 
+  | varDecl 
+  | statement
+}
+
+classDecl = { "class" ~ ident ~ ( "<" ~ ident)? ~ "{" ~ funDecl* ~ "}" }
+
+funDecl = { "fn" ~ function }
+function = { ident ~ "(" ~ params? ~ ")" ~ block }
+params = { ident ~ ( "," ~ ident )* }
+block = { "{" ~ declaration* ~  "}" }
+
+statement = { 
+  exprStmt 
+  | forStmt 
+  | ifStmt 
+  | printStmt 
+  | returnStmt
+  | whileStmt 
+  | block
+ }          
+exprStmt = { expression ~ le }
+forStmt  = { 
+  "for" 
+  ~ "(" ~ ( varDecl | exprStmt | le ) ~ expression? ~ le ~ expression? ~ ")"
+  ~ statement 
+}
+ifStmt    = { "if" ~ "(" ~ expression ~ ")" ~ statement ~ ( "else" ~ statement )? }
+printStmt = { "print" ~ expression ~ le }
+returnStmt = { "return" ~ expression? ~ le }
+whileStmt = { "while" ~ "(" ~ expression ~ ")" ~ statement }
+
+
+varDecl = { "let" ~ ident ~ ("=" ~ expression) ~ le }
+expression = { assignment }
+assignment = { ( call ~ "." )? ~ ident ~ "=" ~ assignment | logic_or }
+logic_or = { logic_and ~ ("or" ~ logic_and )* }
+logic_and = { equality ~ ( "and" ~ equality )* }
+equality = { comparison ~ ( ( "!=" | "==" ) ~ comparison)* }
+comparison = { addition ~ ( ( ">" | ">=" | "<" | "<=" ) ~ addition )*  }
+addition = { multiplication ~ ( ( "-" | "+" ) ~ multiplication )* }
+multiplication = { unary ~ ( ( "/" | "*" ) ~ unary )* }
+unary = { ("!" | "-") ~ unary | call }
+call = { primary ~ ( "(" ~ args? ~ ")" | "." ~ ident )* }
+args = { expression ~ ( "," ~ expression )* }
+primary = { 
+  "true" | "false" | "nil" | "this" | NUMBER | STRING
+  | ident | "(" ~ expression ~ ")" | "super" ~ "." ~ ident 
+} 
+
+ident = @{ ASCII_ALPHANUMERIC+ }
+STRING = { "\"" ~ ASCII_ALPHANUMERIC+ ~ "\"" }
+le = _{ ";" }

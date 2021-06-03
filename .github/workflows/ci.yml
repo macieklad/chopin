@@ -39,13 +39,7 @@ jobs:
 
     strategy:
       matrix:
-        build: [stable, beta, nightly]
-        include:
-          - build: beta
-            rust: beta
-          - build: nightly
-            rust: nightly
-            benches: true
+        build: [stable]
 
     steps:
       - name: Checkout
@@ -105,14 +99,14 @@ jobs:
       - name: Package
         shell: bash
         run: |
-          #strip target/${{ matrix.target }}/release/testmest
+          #strip target/${{ matrix.target }}/release/chopin
           cd target/${{ matrix.target }}/release          
-          tar czvf ../../../testmest-${{ matrix.target }}.tar.gz testmest
+          tar czvf ../../../chopin-${{ matrix.target }}.tar.gz chopin
           cd -
       - name: Publish
         uses: softprops/action-gh-release@v1
         # TODO: if any of the build step fails, the release should be deleted.
         with:
-            files: 'testmest*'
+            files: 'chopin*'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

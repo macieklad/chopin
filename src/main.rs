@@ -13,6 +13,7 @@ use pest_string::StringParser;
 use std::fs;
 
 mod interpreter;
+mod tests;
 
 #[derive(Parser, StringParser)]
 #[grammar = "grammar.pest"]

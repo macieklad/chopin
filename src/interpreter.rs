@@ -1,7 +1,5 @@
 use std::collections::HashMap;
 use std::convert::TryInto;
-use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::expr;
@@ -443,7 +441,6 @@ pub struct Interpreter {
     pub retval: Option<Value>,
     pub output: Vec<String>,
     pub enclosing_function: Option<u64>,
-    pub interrupted: Arc<AtomicBool>,
     pub backtrace: Vec<(u64, String)>,
 }
 
@@ -572,7 +569,6 @@ impl Default for Interpreter {
             retval: None,
             output: Default::default(),
             enclosing_function: None,
-            interrupted: Arc::new(AtomicBool::new(false)),
             backtrace: vec![(0, "script".to_string())],
         }
     }
@@ -580,7 +576,6 @@ impl Default for Interpreter {
 
 impl Interpreter {
     pub fn interpret(&mut self, stmts: &[expr::Stmt]) -> Result<(), String> {
-        self.interrupted.store(false, Ordering::Release);
         for stmt in stmts {
             self.execute(stmt)?
         }
@@ -787,10 +782,6 @@ impl Interpreter {
     }
 
     fn interpret_expr(&mut self, expr: &expr::Expr) -> Result<Value, String> {
-        if self.interrupted.load(Ordering::Acquire) {
-            return Ok(Value::Nil);
-        }
-
         match expr {
             expr::Expr::This(source_location) => match self.lookup(&Interpreter::this_symbol(
                 source_location.line,
@@ -1044,6 +1035,12 @@ impl Interpreter {
             }
             (Value::Number(n1), expr::BinaryOpTy::GreaterEqual, Value::Number(n2)) => {
                 Ok(Value::Bool(n1 >= n2))
+            }
+            (Value::Number(n1), expr::BinaryOpTy::Plus, Value::String(n2)) => {
+                Ok(Value::String(format!("{}{}", n1, n2)))
+            }
+            (Value::String(n1), expr::BinaryOpTy::Plus, Value::Number(n2)) => {
+                Ok(Value::String(format!("{}{}", n1, n2)))
             }
             (Value::Number(n1), expr::BinaryOpTy::Plus, Value::Number(n2)) => {
                 Ok(Value::Number(n1 + n2))

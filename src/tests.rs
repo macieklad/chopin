@@ -56,7 +56,7 @@ mod tests {
     }
     #[test]
     fn test_invalid_binary_operands() {
-        check_error("1 + \"string\";", &|err: &str| {
+        check_error("1 + [1,2,3];", &|err: &str| {
             assert!(err.starts_with("invalid operands in binary operator"))
         })
     }

@@ -51,11 +51,7 @@ fn main() {
             std::process::exit(0);
         }
         Err(err) => {
-            println!(
-                "Runtime Error: {}\n\n{}",
-                err,
-                interpreter.format_backtrace()
-            );
+            println!("Runtime Error: {}", err);
             std::process::exit(-1);
         }
     }

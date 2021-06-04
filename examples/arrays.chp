@@ -1,0 +1,12 @@
+var l = [0,1];
+print "Index 0: " + l[0];
+print "Index 1: " + l[1];
+print "Index -1: " + l[-1];
+print "Index -2: " + l[-2];
+
+var r = [1,2];
+print "List concatenation";
+print l;
+print r;
+print "Result:";
+print l + r;

@@ -1,0 +1,17 @@
+class A {
+  foo() {
+    print "foo";
+  }
+}
+
+class B < A {
+  foo() {
+    print "bar";
+  }
+
+  superFoo() {
+    super.foo();
+  }
+}
+
+B().superFoo();

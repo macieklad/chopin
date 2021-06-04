@@ -1,0 +1,20 @@
+var tick = 0;
+
+print "Odd number counting using for loop";
+
+for (var i = 0; i < 10; i = i + 1) {
+  if (tick == 1) {
+    print i;
+    tick = 0;
+  } else {
+    tick = tick + 1;
+  }
+}
+
+print "Number counting usuing while";
+var counter = 0;
+
+while (counter < 10) {
+  print counter;
+  counter = counter + 1;
+}

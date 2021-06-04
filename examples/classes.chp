@@ -1,0 +1,24 @@
+class A {
+  foo() {
+    print "foo";
+  }
+}
+
+class B < A {
+  foo() {
+    print "bar";
+  }
+}
+
+class C < B {
+  foo() {
+    print "baz";
+  }
+}
+
+print "Class A foo method:";
+A().foo();
+print "Class B foo method:";
+B().foo();
+print "Class C foo method:";
+C().foo();

@@ -1,0 +1,9 @@
+var offsets = [1234, 12012, 112239, 2911112];
+
+fun offseter(offset) { return clock() + offset; }
+fun printer(item) { print item; }
+offsets = map(offseter, offsets);
+
+print "Length of offsets: " + len(offsets);
+print "Converted to clocks:";
+forEach(offsets, printer);

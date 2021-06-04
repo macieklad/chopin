@@ -1,0 +1,24 @@
+class Counter {
+  exec() {
+    if (this.getLimit() < this.count) {
+      print "Cannot count to more than 1000";
+      return;
+    }
+
+    for (var i = 0; i < this.count; i = i + 1) {
+        this.printCount(i);
+    }
+  }
+
+   getLimit() {
+    return 1000;
+  }
+
+  printCount(val) {
+    print "Count - " + val;
+  }
+}
+
+var c = Counter();
+c.count = 100;
+c.exec();

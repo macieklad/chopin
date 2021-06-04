@@ -582,15 +582,6 @@ impl Interpreter {
         Ok(())
     }
 
-    pub fn format_backtrace(&self) -> String {
-        let lines: Vec<_> = self
-            .backtrace
-            .iter()
-            .map(|(_, funname)| format!("[line ??] in {}", funname))
-            .collect();
-        format!("Backtrace (most recent call last):\n\n{}", lines.join("\n"))
-    }
-
     fn alloc_id(&mut self) -> u64 {
         let res = self.counter;
         self.counter += 1;

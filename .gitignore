@@ -3,3 +3,7 @@
 Cargo.lock
 .repl-history.txt
 .debugger-history.txt
+
+node_modules
+/code.chp
+/result
